@@ -1,0 +1,757 @@
+<!--
+=====================================================================
+  GUIA RÁPIDO — SITE DO GRUPAMENTO SPEED
+=====================================================================
+  Página única (HTML + CSS). Basta abrir no navegador.
+  A pasta "a/" ao lado deste arquivo guarda todas as imagens.
+
+  ONDE MEXER
+    • Cores ............ bloco :root no CSS (variáveis --gold, --ink, etc.)
+    • Fontes ........... link do Google Fonts no <head> e --display / --text
+    • Texto ............ procure o trecho dentro do <body> e edite
+    • Nova seção ....... copie uma <section class="s" id="..."> inteira,
+                         troque o id, o input (ck_...) e adicione um link
+                         no <nav>. O número (01, 02...) é só texto.
+    • Nova viatura ..... copie um <figure> dentro de .gal
+    • Nova regra ....... copie um <div class="rule"> em "Regras"
+    • Trocar imagem .... mesmo nome de arquivo na pasta "a/", ou mude o src=""
+=====================================================================
+-->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manual de Conduta SPEED</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+/* ===================================================================
+   IDENTIDADE
+   Preto de asfalto, dourado envelhecido e bronze, extraídos do brasão.
+   =================================================================== */
+:root{
+  --bg:#0b0a08;
+  --surface:#121010;
+  --ink:#ebe5d8;
+  --ink-soft:#cfc8ba;
+  --mut:#8d857a;
+  --line:#2a251c;
+  --line-soft:#1d1a13;
+  --gold:#c9a25a;
+  --gold-hi:#e6cd8c;
+  --bronze:#7d5a2b;
+  --display:'Big Shoulders Display','Arial Narrow',sans-serif;
+  --text:'Archivo',system-ui,-apple-system,sans-serif;
+  --pad:clamp(20px,4vw,56px);
+  --side:232px;
+  --bar:60px;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--bar)}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--text);
+  font-size:16px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  -webkit-text-size-adjust:100%;
+}
+img{max-width:100%;display:block}
+a{color:inherit;-webkit-tap-highlight-color:transparent}
+b,strong{color:var(--ink);font-weight:600}
+u{text-decoration-color:var(--gold);text-underline-offset:.22em;text-decoration-thickness:1px}
+:focus-visible{outline:1px solid var(--gold-hi);outline-offset:4px}
+::selection{background:var(--gold);color:var(--bg)}
+
+/* ===================================================================
+   LAYOUT: barra lateral + conteúdo
+   =================================================================== */
+.shell{
+  display:grid;
+  grid-template-columns:var(--side) minmax(0,1fr);
+  min-height:100vh;
+}
+
+/* ===================================================================
+   MENU LATERAL (desktop)
+   =================================================================== */
+.nav{
+  position:sticky;top:0;
+  height:100vh;
+  display:flex;flex-direction:column;
+  padding:36px 0 28px;
+  background:var(--bg);
+  border-right:1px solid var(--line);
+  overflow-y:auto;scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none}
+.brand{
+  display:flex;flex-direction:column;align-items:flex-start;gap:14px;
+  padding:0 28px 28px;
+  text-decoration:none;
+}
+.brand img{width:44px;height:44px;object-fit:contain}
+.brand span{
+  font-family:var(--display);font-weight:800;font-size:22px;
+  letter-spacing:.18em;color:var(--gold-hi);line-height:1;
+}
+.brand-in{display:contents;cursor:pointer}
+.menu-toggle,.burger{display:none}
+.links{display:flex;flex-direction:column;margin-top:4px}
+.links a{
+  position:relative;
+  display:block;
+  padding:10px 28px 9px;
+  font-family:var(--display);font-weight:500;font-size:17px;
+  letter-spacing:.06em;text-transform:uppercase;line-height:1.15;
+  text-decoration:none;color:var(--mut);
+  transition:color .25s ease,background-color .25s ease;
+}
+.links a::before{
+  content:"";position:absolute;left:0;top:50%;
+  width:2px;height:0;background:var(--gold);
+  transform:translateY(-50%);
+  transition:height .25s ease;
+}
+.links a:hover{color:var(--ink)}
+.links a:hover::before{height:60%}
+.links a.is-active{color:var(--gold-hi)}
+.links a.is-active::before{height:60%}
+.links label{cursor:pointer}
+
+/* ===================================================================
+   CONTEÚDO
+   =================================================================== */
+.content{min-width:0;padding-inline:var(--pad)}
+.frame{max-width:960px;margin:0 auto}
+
+/* ===================================================================
+   CAPA
+   =================================================================== */
+.hero{
+  border-bottom:1px solid var(--line);
+  padding-block:clamp(56px,9vw,120px) clamp(48px,7vw,88px);
+}
+.hero .frame{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
+  gap:clamp(32px,5vw,72px);
+  align-items:center;
+}
+.hero h1{
+  margin:0;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  font-size:clamp(60px,10vw,130px);line-height:.88;letter-spacing:.01em;
+  color:var(--ink);
+}
+.hero h1 .unit{
+  display:block;
+  margin-top:14px;
+  font-weight:500;font-size:clamp(22px,3vw,32px);
+  letter-spacing:.2em;color:var(--gold);
+}
+.hero .lede{
+  max-width:58ch;
+  margin:36px 0 0;
+  font-size:17px;color:var(--ink-soft);
+}
+.motto{
+  margin:36px 0 0;
+  padding-left:20px;
+  border-left:2px solid var(--gold);
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(20px,2.6vw,25px);line-height:1.25;
+  letter-spacing:.02em;color:var(--gold-hi);
+}
+.seal{width:100%;max-width:340px;height:auto;justify-self:end;opacity:.96}
+
+/* ===================================================================
+   SEÇÕES
+   Uma seção aparece por vez (controlado pelos radio buttons).
+   =================================================================== */
+.s{padding-block:clamp(56px,8vw,96px)}
+.s:has(.sessao){display:none}
+.s:has(.sessao:checked){display:block;animation:rise .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.sec-head{
+  display:grid;grid-template-columns:auto 1fr;
+  align-items:end;gap:18px 22px;
+  margin:0 0 40px;padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.num{
+  font-family:var(--display);font-weight:500;font-size:18px;
+  letter-spacing:.12em;color:var(--gold);line-height:1;
+  padding-bottom:8px;
+}
+.sec-head h2{
+  margin:0;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  font-size:clamp(38px,5.4vw,64px);line-height:.92;letter-spacing:.005em;
+  color:var(--ink);
+}
+
+.prose{max-width:68ch}
+.prose p{margin:0 0 18px}
+.prose p:last-child{margin-bottom:0}
+
+.aside{
+  margin:40px 0 0;
+  padding:4px 0 4px 24px;
+  border-left:1px solid var(--bronze);
+  max-width:68ch;
+}
+.aside p{margin:0}
+.aside + .aside{margin-top:24px}
+.aside.alert{border-left-color:var(--gold-hi)}
+.aside.obs{font-size:15px;color:var(--mut);border-left-color:var(--line)}
+.aside.obs b{color:var(--gold-hi);font-weight:600}
+
+/* ===================================================================
+   EQUIPAMENTO
+   =================================================================== */
+.gal{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(24px,3vw,40px);
+  margin-top:48px;
+}
+.gal figure{margin:0;min-width:0}
+.gal figure:first-child{grid-column:1/-1}
+.tag{
+  display:flex;align-items:baseline;gap:10px;
+  margin-bottom:12px;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:22px;letter-spacing:.04em;color:var(--ink);
+}
+.tag::before{content:"";width:18px;height:1px;background:var(--gold);transform:translateY(-6px)}
+.gal img{width:100%;height:auto;border:1px solid var(--line)}
+
+/* ===================================================================
+   CORES LIBERADAS
+   =================================================================== */
+.swatches{margin:0;padding:0;border-top:1px solid var(--line);max-width:760px}
+.crow{
+  display:grid;grid-template-columns:28px minmax(0,1fr);
+  align-items:center;gap:20px;
+  padding:18px 0;border-bottom:1px solid var(--line);
+}
+.sw{width:28px;height:28px;border:1px solid rgba(235,229,216,.18)}
+.lb{display:block;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:21px;letter-spacing:.03em;line-height:1.1;color:var(--ink)}
+.desc{display:block;font-size:15px;color:var(--mut);margin-top:2px}
+
+/* ===================================================================
+   PONTO DE QRV
+   =================================================================== */
+.qrv-img{width:100%;height:auto;border:1px solid var(--line)}
+.statement{
+  margin:36px 0 0;max-width:52ch;
+  padding-left:22px;border-left:2px solid var(--gold);
+  font-size:clamp(18px,2.2vw,21px);line-height:1.5;color:var(--ink);
+}
+.statement b{font-weight:600}
+
+/* ===================================================================
+   FARDAMENTOS
+   =================================================================== */
+.sub{
+  display:flex;align-items:center;gap:14px;
+  margin:56px 0 28px;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(24px,3vw,30px);letter-spacing:.03em;color:var(--ink);
+}
+.sub::before{content:"";width:32px;height:1px;background:var(--gold);flex:none}
+.sub:first-of-type{margin-top:0}
+
+.fgrid{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,240px) minmax(0,1fr);
+  gap:clamp(24px,3.5vw,44px);align-items:start;
+}
+.ch{
+  padding-bottom:10px;margin-bottom:4px;
+  border-bottom:1px solid var(--gold);
+  font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.26em;
+  color:var(--gold);
+}
+.r{text-align:right}
+.it{
+  display:flex;align-items:center;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--line-soft);
+}
+.r .it{flex-direction:row-reverse}
+.it img{width:34px;height:34px;flex:none;object-fit:contain}
+.tx{min-width:0;line-height:1.2}
+.lbl{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut)}
+.val{display:block;font-family:var(--display);font-weight:700;font-size:24px;color:var(--ink);font-variant-numeric:tabular-nums}
+.fimg{border:1px solid var(--line);background:#000}
+.fimg img{width:100%;height:auto}
+.note{margin:22px 0 0;font-size:14px;color:var(--mut)}
+.uniform-note{margin-top:48px}
+
+/* ===================================================================
+   REGRAS
+   =================================================================== */
+.rules{margin-top:40px;border-top:1px solid var(--line);max-width:820px}
+.rule{
+  display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;
+  padding:22px 0;border-bottom:1px solid var(--line);
+}
+.rule .no{
+  font-family:var(--display);font-weight:800;font-size:40px;line-height:.9;
+  color:var(--gold);
+}
+.rule p{margin:0;max-width:62ch}
+
+/* ===================================================================
+   NEUTRALIZAÇÃO
+   =================================================================== */
+.lvl{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 18px;
+  margin:64px 0 18px;padding-top:28px;border-top:1px solid var(--line);
+}
+.lvl:first-of-type{margin-top:40px}
+.lvl .n{
+  font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);
+}
+.lvl .ttl{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(28px,4vw,38px);line-height:1;color:var(--ink);
+}
+.steps{list-style:none;margin:28px 0 0;padding:0;max-width:68ch}
+.steps li{
+  position:relative;padding:0 0 16px 30px;margin:0 0 16px;
+  border-bottom:1px solid var(--line-soft);
+}
+.steps li:last-child{border-bottom:0;margin-bottom:0}
+.steps li::before{
+  content:"";position:absolute;left:0;top:.85em;
+  width:14px;height:1px;background:var(--gold);
+}
+.steps p{margin:0}
+
+/* ===================================================================
+   CRÉDITOS
+   =================================================================== */
+.credits{display:grid;gap:0;max-width:640px;border-top:1px solid var(--line)}
+.credit{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:22px 0;border-bottom:1px solid var(--line);
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  font-size:clamp(40px,6vw,60px);line-height:1;letter-spacing:.01em;color:var(--ink);
+}
+.credit img{width:26px;height:26px;opacity:.85}
+.endseal{width:min(200px,60vw);height:auto;margin:72px 0 0;opacity:.9}
+
+/* ===================================================================
+   RODAPÉ
+   =================================================================== */
+footer{
+  border-top:1px solid var(--line);
+  padding:32px var(--pad) calc(32px + env(safe-area-inset-bottom,0px));
+}
+footer span{
+  font-family:var(--display);font-weight:500;font-size:17px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--mut);
+}
+
+/* ===================================================================
+   TABLET E CELULAR
+   Abaixo de 900px: barra no topo com botão de menu. A lista de seções
+   abre em tela cheia, com área de toque de 48px por item.
+   =================================================================== */
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+
+  .nav{
+    position:sticky;top:0;z-index:30;
+    height:auto;padding:0;
+    flex-direction:row;align-items:center;justify-content:space-between;
+    background:var(--bg);
+    border-right:0;border-bottom:1px solid var(--line);
+    overflow:visible;
+  }
+  .brand{
+    padding:0 20px;height:var(--bar);
+    flex-direction:row;align-items:center;gap:10px;
+  }
+  .brand img{width:28px;height:28px}
+  .brand span{font-size:18px}
+
+  /* Botão de menu (hambúrguer), alvo de toque de 48px */
+  .burger{
+    display:flex;flex-direction:column;justify-content:center;gap:6px;
+    width:48px;height:var(--bar);margin-right:8px;padding:0 12px;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;
+  }
+  .burger span{
+    display:block;height:1.5px;width:100%;background:var(--ink);
+    transform-origin:center;
+    transition:transform .3s ease,opacity .2s ease;
+  }
+  .menu-toggle:checked + .burger span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .menu-toggle:checked + .burger span:nth-child(2){opacity:0}
+  .menu-toggle:checked + .burger span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+  /* Lista de seções: tela cheia abaixo da barra, oculta por padrão */
+  .links{
+    display:none;
+    position:fixed;top:var(--bar);left:0;right:0;bottom:0;
+    flex-direction:column;margin:0;
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:8px 0 calc(24px + env(safe-area-inset-bottom,0px));
+    z-index:29;
+  }
+  .menu-toggle:checked ~ .links{display:flex}
+
+  .links a{
+    display:flex;align-items:center;
+    min-height:52px;
+    padding:12px 24px;
+    font-size:20px;letter-spacing:.05em;
+    border-bottom:1px solid var(--line-soft);
+    border-left:2px solid transparent;
+  }
+  .links a::before{display:none}
+  .links a:hover{background:transparent}
+  .links a:active{background:rgba(201,162,90,.06)}
+  .links a.is-active{border-left-color:var(--gold);color:var(--gold-hi)}
+
+  .hero .frame{grid-template-columns:1fr}
+  .seal{justify-self:start;max-width:240px;order:-1}
+  .gal{grid-template-columns:1fr}
+  .gal figure:first-child{grid-column:auto}
+  .fgrid{grid-template-columns:1fr 1fr;gap:20px 18px}
+  .fimg{grid-column:1/-1;order:-1;max-width:260px;justify-self:center;width:100%}
+  .fgrid > div:first-child{grid-column:1}
+  .fgrid > .r{grid-column:2}
+}
+
+@media (max-width:560px){
+  body{font-size:15.5px}
+  .hero{padding-block:44px 52px}
+  .hero h1{font-size:clamp(54px,17vw,76px)}
+  .hero .lede{font-size:16px;margin-top:26px}
+  .motto{margin-top:26px;font-size:20px}
+  .seal{max-width:200px}
+  .s{padding-block:52px}
+  .sec-head{grid-template-columns:1fr;gap:10px;margin-bottom:30px}
+  .num{padding-bottom:0}
+  .sec-head h2{font-size:40px}
+  .rule{grid-template-columns:44px minmax(0,1fr);gap:12px;padding:18px 0}
+  .rule .no{font-size:30px}
+  .aside{padding-left:18px}
+  .fgrid{grid-template-columns:1fr}
+  .fgrid > .r{grid-column:auto}
+  .fimg{order:0;max-width:none}
+  .r .it{flex-direction:row}
+  .r{text-align:left}
+  .it{padding:12px 0}
+  .it img{width:30px;height:30px}
+  .val{font-size:21px}
+  .credit{font-size:44px}
+  .tag{font-size:20px}
+  .lb{font-size:19px}
+  .statement{padding-left:18px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .s:has(.sessao:checked){animation:none}
+  .burger span{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- MENU: barra lateral no desktop, barra superior com botão no celular -->
+<nav class="nav" aria-label="Seções">
+  <a class="brand" href="#topo">
+    <label for="ck_topo" class="brand-in">
+      <img src="a/logo_small.png" alt="Logo SPEED">
+      <span>SPEED</span>
+    </label>
+  </a>
+
+  <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true">
+  <label class="burger" for="menu-toggle" aria-label="Abrir menu de seções" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </label>
+
+  <div class="links">
+    <a href="#equipamento"><label for="ck_equipamento">Equipamento</label></a>
+    <a href="#cores"><label for="ck_cores">Cores Liberadas</label></a>
+    <a href="#qrv"><label for="ck_qrv">Ponto de QRV</label></a>
+    <a href="#fardamentos"><label for="ck_fardamentos">Fardamentos</label></a>
+    <a href="#regras"><label for="ck_regras">Regras</label></a>
+    <a href="#especializacao"><label for="ck_especializacao">Especialização</label></a>
+    <a href="#conduta"><label for="ck_conduta">Conduta de Acompanhamento</label></a>
+    <a href="#neutralizacao"><label for="ck_neutralizacao">Neutralização de Veículos</label></a>
+    <a href="#creditos"><label for="ck_creditos">Créditos</label></a>
+  </div>
+</nav>
+
+<!-- CONTEÚDO -->
+<div class="content">
+
+<!-- CAPA -->
+<header class="hero s" id="topo">
+  <input type="radio" id="ck_topo" class="sessao" name="sessao" style="display:none" checked>
+  <div class="frame">
+    <div>
+      <h1>SPEED<span class="unit">1° BPM-AV</span></h1>
+      <p class="lede">Nossa unidade, SPEED, é composta por diversos oficiais, onde todos eles são altamente capacitados para realizarem acompanhamentos de alta velocidade, sendo esse seu principal objetivo, ou seja, como o próprio nome diz, é uma unidade de resposta rápida. Dessa forma, contamos apenas com os melhores pilotos da cidade, sempre mantendo a excelência em todos os procedimentos.</p>
+      <p class="motto">Não importa onde se esconda, vou te caçar até o inferno</p>
+    </div>
+    <img class="seal" src="a/logo.png" alt="Brasão S.P.E.E.D Cidade Alta: Capturar e prender, perseguir, caçar" width="1400" height="1400">
+  </div>
+</header>
+
+<main class="frame">
+
+<!-- 01 · EQUIPAMENTO -->
+<section class="s" id="equipamento">
+  <input type="radio" id="ck_equipamento" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">01</span><h2>Equipamento</h2></div>
+  <div class="prose">
+    <p>Atualmente, nossa unidade conta com três viaturas em operação: Dominator, Coquette e Cypher. Ambas são liberadas para Pilotos Oficiais+, sendo a principal unidade de apoio para essas funções. Essa organização visa garantir a distribuição adequada dos recursos e assegurar que a viatura seja usada conforme a experiência e a necessidade de cada membro da equipe.</p>
+    <p style="margin-top:18px">As viaturas são de total responsabilidade dos pilotos a quem pertencem. É fundamental que cada veículo esteja sempre em perfeitas condições, devidamente reparado, abastecido e pronto para oferecer o suporte necessário ao batalhão. A manutenção e cuidado com esses equipamentos são essenciais para garantir a eficiência e segurança das operações, refletindo o compromisso de cada piloto com o bom funcionamento e a prontidão do grupamento.</p>
+  </div>
+  <!-- GALERIA DE VIATURAS
+       Para adicionar uma viatura: coloque a foto em "a/", copie um <figure> e troque
+       o nome (class="tag") e o src. A primeira figura ocupa a largura toda. -->
+  <div class="gal">
+    <figure><div class="tag">Dominator</div><img src="a/dominator.jpg" alt="Viatura Dominator" width="1671" height="955"></figure>
+    <figure><div class="tag">Coquette (C7)</div><img src="a/coquette.jpg" alt="Viatura Coquette C7" width="1592" height="842"></figure>
+    <figure><div class="tag">Cypher (M2)</div><img src="a/cypher.jpg" alt="Viatura Cypher M2" width="1215" height="664"></figure>
+  </div>
+</section>
+
+<!-- 02 · CORES LIBERADAS -->
+<section class="s" id="cores">
+  <input type="radio" id="ck_cores" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">02</span><h2>Cores Liberadas</h2></div>
+  <div class="swatches">
+    <div class="crow"><div class="sw" style="background:#fff"></div><div><span class="lb">Comando</span><span class="desc">Coloração Branca</span></div></div>
+    <div class="crow"><div class="sw" style="background:#fff"></div><div><span class="lb">Braço Direito</span><span class="desc">Coloração Branca</span></div></div>
+    <div class="crow"><div class="sw" style="background:linear-gradient(90deg,#fff 50%,#000 50%)"></div><div><span class="lb">Piloto Elite</span><span class="desc">Coloração Branca e Preto</span></div></div>
+    <div class="crow"><div class="sw" style="background:#1a1a1a"></div><div><span class="lb">Piloto Prodígio / 220 Apreensões</span><span class="desc">Coloração Preta Fosca</span></div></div>
+    <div class="crow"><div class="sw" style="background:#1f4fd8"></div><div><span class="lb">Piloto Oficial e Veterano</span><span class="desc">Coloração Azul</span></div></div>
+  </div>
+</section>
+
+<!-- 03 · PONTO DE QRV -->
+<section class="s" id="qrv">
+  <input type="radio" id="ck_qrv" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">03</span><h2>Ponto de QRV</h2></div>
+  <img class="qrv-img" src="a/qrv.jpg" alt="Viatura SPEED estacionada no Pillbox Medical Center" width="1810" height="811">
+  <p class="statement"><b>Atualmente a unidade SPEED mantém seu ponto de QRV estabelecido no Pillbox Medical Center, permanecendo estacionada no local, assegurando a pronta resposta nas QRU.</b></p>
+</section>
+
+<!-- 04 · FARDAMENTOS -->
+<section class="s" id="fardamentos">
+  <input type="radio" id="ck_fardamentos" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">04</span><h2>Fardamentos</h2></div>
+
+  <h3 class="sub">Piloto Oficial</h3>
+  <div class="fgrid">
+    <div>
+      <div class="ch">MASCULINO</div>
+      <div class="it"><img src="a/ic0.png" alt=""><div class="tx"><span class="lbl">Blusa</span><span class="val">755</span></div></div>
+      <div class="it"><img src="a/ic1.png" alt=""><div class="tx"><span class="lbl">Calça</span><span class="val">237 - 4</span></div></div>
+      <div class="it"><img src="a/ic2.png" alt=""><div class="tx"><span class="lbl">Coturno</span><span class="val">163 - 2</span></div></div>
+      <div class="it"><img src="a/ic3.png" alt=""><div class="tx"><span class="lbl">Colete</span><span class="val">85 - 3</span></div></div>
+      <div class="it"><img src="a/ic4.png" alt=""><div class="tx"><span class="lbl">Cinto Tático</span><span class="val">0</span></div></div>
+      <div class="it"><img src="a/ic5.png" alt=""><div class="tx"><span class="lbl">Coldre de Perna</span><span class="val">271</span></div></div>
+      <div class="it"><img src="a/ic6.png" alt=""><div class="tx"><span class="lbl">Luvas</span><span class="val">0</span></div></div>
+    </div>
+    <div class="fimg"><img src="a/uni1.png" alt="Uniforme de Aspirante a Piloto, masculino e feminino" width="361" height="520"></div>
+    <div class="r">
+      <div class="ch">FEMININO</div>
+      <div class="it"><img src="a/ic0.png" alt=""><div class="tx"><span class="lbl">Blusa</span><span class="val">927</span></div></div>
+      <div class="it"><img src="a/ic1.png" alt=""><div class="tx"><span class="lbl">Calça</span><span class="val">248 - 6</span></div></div>
+      <div class="it"><img src="a/ic2.png" alt=""><div class="tx"><span class="lbl">Coturno</span><span class="val">171 - 1</span></div></div>
+      <div class="it"><img src="a/ic3.png" alt=""><div class="tx"><span class="lbl">Colete</span><span class="val">99 - 4</span></div></div>
+      <div class="it"><img src="a/ic4.png" alt=""><div class="tx"><span class="lbl">Cinto Tático</span><span class="val">0</span></div></div>
+      <div class="it"><img src="a/ic5.png" alt=""><div class="tx"><span class="lbl">Coldre de Perna</span><span class="val">165</span></div></div>
+      <div class="it"><img src="a/ic6.png" alt=""><div class="tx"><span class="lbl">Luvas</span><span class="val">0</span></div></div>
+    </div>
+  </div>
+  <p class="note">* Uso da jaqueta pra fora liberado após o término do trote.</p>
+
+  <h3 class="sub">Piloto Veterano+</h3>
+  <div class="fgrid">
+    <div>
+      <div class="ch">MASCULINO</div>
+      <div class="it"><img src="a/ic0.png" alt=""><div class="tx"><span class="lbl">Blusa</span><span class="val">754</span></div></div>
+      <div class="it"><img src="a/ic1.png" alt=""><div class="tx"><span class="lbl">Calça</span><span class="val">237 - 5</span></div></div>
+      <div class="it"><img src="a/ic2.png" alt=""><div class="tx"><span class="lbl">Coturno</span><span class="val">163 - 1</span></div></div>
+      <div class="it"><img src="a/ic3.png" alt=""><div class="tx"><span class="lbl">Colete</span><span class="val">85</span></div></div>
+      <div class="it"><img src="a/ic4.png" alt=""><div class="tx"><span class="lbl">Cinto Tático</span><span class="val">0</span></div></div>
+      <div class="it"><img src="a/ic5.png" alt=""><div class="tx"><span class="lbl">Coldre de Perna</span><span class="val">271 - 1</span></div></div>
+      <div class="it"><img src="a/ic6.png" alt=""><div class="tx"><span class="lbl">Luvas</span><span class="val">0</span></div></div>
+    </div>
+    <div class="fimg"><img src="a/uni2.png" alt="Uniforme de Piloto Oficial+, masculino e feminino" width="383" height="508"></div>
+    <div class="r">
+      <div class="ch">FEMININO</div>
+      <div class="it"><img src="a/ic0.png" alt=""><div class="tx"><span class="lbl">Blusa</span><span class="val">928 - 11</span></div></div>
+      <div class="it"><img src="a/ic1.png" alt=""><div class="tx"><span class="lbl">Calça</span><span class="val">248 - 6</span></div></div>
+      <div class="it"><img src="a/ic2.png" alt=""><div class="tx"><span class="lbl">Coturno</span><span class="val">171 - 3</span></div></div>
+      <div class="it"><img src="a/ic3.png" alt=""><div class="tx"><span class="lbl">Colete</span><span class="val">99</span></div></div>
+      <div class="it"><img src="a/ic4.png" alt=""><div class="tx"><span class="lbl">Cinto Tático</span><span class="val">0</span></div></div>
+      <div class="it"><img src="a/ic5.png" alt=""><div class="tx"><span class="lbl">Coldre de Perna</span><span class="val">274 - 1</span></div></div>
+      <div class="it"><img src="a/ic6.png" alt=""><div class="tx"><span class="lbl">Luvas</span><span class="val">0</span></div></div>
+    </div>
+  </div>
+
+  <div class="aside uniform-note">
+    <p>Todos os Pilotos conectados à SPEED devem utilizar os uniformes da unidade conforme os exemplos mostrados nas imagens acima. Sendo Piloto Oficial, o oficial pode utilizar somente a camisa da SPEED (seja pra fora ou não), <b>exceto as de Comando e a farda preta</b>. É importante ressaltar que máscaras e chapéus da SPEED são liberados apenas para Pilotos. <b>Aos Pilotos Veteranos+, a utilização do colete balístico no fardamento se torna opcional, exceto em ações.</b></p>
+  </div>
+  <div class="aside">
+    <p>A uniformidade no vestuário é essencial para manter a coesão e a identidade visual da unidade, facilitando o reconhecimento dos membros da SPEED durante o dia a dia e garantindo uma aparência profissional. Certifiquem-se de seguir essas diretrizes rigorosamente para assegurar que todos estejam adequadamente identificados e representando a unidade com excelência.</p>
+  </div>
+</section>
+
+<!-- 05 · REGRAS -->
+<section class="s" id="regras">
+  <input type="radio" id="ck_regras" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">05</span><h2>Regras Gerais</h2></div>
+  <div class="prose">
+    <p>Como o próprio nome indica, a SPEED é uma unidade de resposta rápida. Dessa forma, contamos apenas com os melhores pilotos da cidade, garantindo a excelência em todos os procedimentos.</p>
+    <p>Cada membro da SPEED é treinado para manejar situações de alta pressão com precisão e eficiência, destacando-se nos acompanhamentos mais desafiadores. Nosso compromisso é manter um padrão elevado de desempenho, assegurando que todas as operações sejam conduzidas com máxima competência e segurança.</p>
+    <p style="margin-top:22px"><b>No entanto, na SPEED, existem regras que todos devemos seguir, tais como:</b></p>
+  </div>
+  <div class="rules">
+    <div class="rule"><div class="no">1°</div><p>É estritamente <b>proibido</b> ficar usando sua viatura de maneira desorientada e desgovernada, utilizando-a como um mecanismo de <i>bate-bate</i>.</p></div>
+    <div class="rule"><div class="no">2°</div><p><b>Não se estressar por qualquer motivo</b>, principalmente por estilos de fuga que diferem do seu. <b>Caso você não tenha paciência para manter um acompanhamento limpo e saudável, não será bem-vindo em nossa unidade.</b></p></div>
+    <div class="rule"><div class="no">3°</div><p><b>Dentro da unidade, temos um sistema semelhante às advertências de registro militar.</b> <b>À primeira</b> advertência acarretará na <b>suspensão de 48 horas</b> de patrulhamento com a SPEED; a <b>segunda advertência</b> acarretará a suspensão de <b>7 dias</b> de patrulhamento com a SPEED; e na terceira e última advertência, o oficial será convidado a se retirar da unidade.</p></div>
+    <div class="rule"><div class="no">4°</div><p>A manobra <i>PIT</i> é de uso exclusivo dos <b>Pilotos com curso PIT.</b></p></div>
+    <div class="rule"><div class="no">5°</div><p>O equipamento de SPIKE é de uso exclusivo dos <b>Pilotos das divisões de Acompanhamento (SPEED e GTM).</b></p></div>
+    <div class="rule"><div class="no">6°</div><p>Respeitar os colegas da unidade é fundamental para manter a harmonia e o espírito de equipe. Trate a todos com o devido respeito e empatia. A falta de respeito não será tolerada na unidade nem no batalhão.</p></div>
+  </div>
+</section>
+
+<!-- 06 · ESPECIALIZAÇÃO -->
+<section class="s" id="especializacao">
+  <input type="radio" id="ck_especializacao" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">06</span><h2>Especialização</h2></div>
+  <div class="prose">
+    <p>Durante todo o processo de recrutamento e estágio, trabalhamos na especialização dos pilotos. Nesta etapa, lapidamos o oficial para que desenvolva habilidades na pilotagem de viaturas mais ágeis e rápidas, além de focar na questão da modulação, que é primordial para sua evolução na unidade.</p>
+    <p style="margin-top:18px">Contudo, deixamos claro que o enfoque da especialização não está apenas na capacidade de acompanhamento e modulação, mas também na evolução que o estagiário ou piloto pode alcançar dentro da unidade e no batalhão. Como mencionado anteriormente, valorizamos muito o oficial que preza e realiza seus procedimentos com excelência.</p>
+  </div>
+</section>
+
+<!-- 07 · CONDUTA DE ACOMPANHAMENTO -->
+<section class="s" id="conduta">
+  <input type="radio" id="ck_conduta" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">07</span><h2>Conduta de Acompanhamento</h2></div>
+  <div class="prose">
+    <p>A SPEED terá como foco principal os QRU's de veículos de alta performance, nos quais as demais viaturas não conseguiriam manter o acompanhamento. Para isso, além dos pilotos mais capacitados do 1º BPM-AV, contamos também com os melhores na modulação, assegurando a melhor resposta possível durante um acompanhamento.</p>
+    <p style="margin-top:18px">Nos acompanhamentos a motocicletas, a GTM deverá ser a primária; em veículos menores, por exemplo Panto, Brioso e Issis, a GTM poderá ser a primária, e a SPEED deve se manter na secundária.</p>
+    <p style="margin-top:18px">Lembramos que as noções passadas no curso de acompanhamento são plenamente eficazes em nossa unidade. Portanto, devemos sempre seguir as medidas preconizadas neste manual, garantindo que os oficiais realizem os acompanhamentos conforme todas as normas.</p>
+  </div>
+  <div class="aside">
+    <p>Em acompanhamentos habituais, poderão participar no máximo duas unidades da SPEED. No entanto, se o veículo acompanhado for de alta performance (A e S) e não houver outra viatura disponível para prestar apoio, serão permitidas três unidades da SPEED no acompanhamento. É recomendável que a terceira unidade leve uma viatura 4 portas para auxiliar na condução do indivíduo caso o acompanhamento seja bem-sucedido.</p>
+  </div>
+  <div class="aside">
+    <p>Em acompanhamentos de código 3, não existe limite para o número de unidades da SPEED envolvidas, sendo o bom senso a principal orientação, conforme dispõe nosso manual de acompanhamento.</p>
+  </div>
+</section>
+
+<!-- 08 · NEUTRALIZAÇÃO DE VEÍCULOS -->
+<section class="s" id="neutralizacao">
+  <input type="radio" id="ck_neutralizacao" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">08</span><h2>Neutralização de Veículos</h2></div>
+  <div class="prose">
+    <p>Além do uso progressivo da força utilizado nos procedimentos de abordagem do nosso dia a dia, esse conceito também se aplica ao acompanhamento. Nessa situação, um piloto da nossa unidade precisa saber como realizar essa progressão para, em um caso concreto, tomar a melhor decisão e, consequentemente, salvar mais vidas. Veja, então, os níveis da progressão da força nos acompanhamentos:</p>
+  </div>
+
+  <div class="lvl"><span class="n">Nível 1</span><span class="ttl">Acompanhamento limpo</span></div>
+  <div class="prose">
+    <p>É o acompanhamento <b>mais habitual</b> do nosso dia a dia: aquele em que o indivíduo apenas tenta fugir e não coloca diretamente a própria vida ou a de terceiros em perigo. Logo, <b>o acompanhamento deve, sem exceção, seguir de maneira limpa, sem nenhuma intervenção direta por parte dos oficiais.</b></p>
+  </div>
+
+  <div class="lvl"><span class="n">Nível 2</span><span class="ttl">Condução perigosa ou resgate</span></div>
+  <div class="prose">
+    <p>Durante um acompanhamento, o indivíduo que está se evadindo pode colocar em perigo a vida de terceiros e até a dos oficiais. Nesses casos, precisamos tomar algumas atitudes rápidas. Nossa unidade tem papel fundamental nessas decisões, então segue abaixo a lista das atitudes indicadas:</p>
+  </div>
+  <ul class="steps">
+    <li><p>Se o veículo acompanhado atropelar um indivíduo e/ou uma GTM e não parar para prestar apoio, primeiramente verbalize ao indivíduo explicando o ocorrido. Caso ele volte a repetir, <b>deverá seguir a seguinte ordem:</b> SPEED <b>(aplicação do “P.I.T” e BOX / Spike) → GRA (liberação de disparos no pneu) → SGT+ (liberação de disparos no pneu)</b>. <span style="color:var(--gold-hi)"><u>Apenas quando o disparo for liberado.</u></span></p></li>
+    <li><p>Se o indivíduo sofre o primeiro resgate, <b>deverá seguir a ordem:</b> SPEED <b>(aplicação do “P.I.T” e BOX / Spike), adicionando 2 vagas ao acompanhamento.</b></p></li>
+    <li><p>Se o indivíduo sofre o segundo resgate, <b>deverá seguir a ordem:</b> SPEED <b>(aplicação do “P.I.T” e BOX / Spike) → GRA (liberação de disparos no pneu) → Alto Comando (liberação de disparos no pneu).</b></p></li>
+    <li><p>Se o indivíduo sofre um resgate e o veículo que oferece o resgate é uma motocicleta, ou se o indivíduo cai duas vezes da moto, <b>deverá ser chamada a GTM (disparos no pneu).</b></p></li>
+  </ul>
+  <div class="aside obs">
+    <p><b>Obs¹:</b> os SGT+ e os pilotos da SPEED possuem total autonomia para analisar a situação e avaliar se é o caso de tomar alguma atitude referente ao acompanhamento em questão. Contudo, frisa-se que uma unidade não pode interferir na outra; dessa forma, essas divisões são autônomas entre si para decidir o que é melhor em cada situação.</p>
+  </div>
+  <div class="aside obs">
+    <p><b>Obs²:</b> se nas situações elencadas acima as hipóteses se esgotarem, ou seja, se não houver SGT+ em QRV ou GTM (em acompanhamentos a motocicletas), o acompanhamento deverá seguir normalmente.</p>
+  </div>
+
+  <div class="lvl"><span class="n">Nível 3</span><span class="ttl">Ameaça letal</span></div>
+  <div class="aside alert">
+    <p>Durante um acompanhamento, se o indivíduo que estiver fugindo colocar a própria vida ou a de terceiros em <b>perigo iminente</b>, seja por estar com uma arma de fogo e efetuar disparos, seja por tentar derrubar sua viatura de locais altos de forma proposital, ou qualquer outra situação que coloque sua integridade em perigo, <b>você estará autorizado a fazer cessar esse perigo por meio da neutralização do indivíduo que gera a situação.</b></p>
+  </div>
+</section>
+
+<!-- 09 · CRÉDITOS -->
+<section class="s" id="creditos">
+  <input type="radio" id="ck_creditos" class="sessao" name="sessao" style="display:none">
+  <div class="sec-head"><span class="num">09</span><h2>Créditos</h2></div>
+  <div class="credits">
+    <div class="credit"><span>Luka Koenigsegg</span><img src="a/bolt.png" alt=""></div>
+    <div class="credit"><span>Juliana Haas</span><img src="a/bolt.png" alt=""></div>
+  </div>
+  <img class="endseal" src="a/logo.png" alt="" width="1400" height="1400">
+</section>
+
+</main>
+
+<footer>
+  <span>Não importa onde se esconda, vou te caçar até o inferno</span>
+</footer>
+
+</div>
+</div>
+
+<script>
+/* Fecha o menu do celular ao escolher uma seção
+   e marca o item da seção aberta no menu. */
+(function(){
+  var toggle = document.getElementById('menu-toggle');
+  var links = document.querySelectorAll('.links a');
+
+  function setActive(hash){
+    links.forEach(function(a){
+      a.classList.toggle('is-active', a.getAttribute('href') === hash);
+    });
+  }
+
+  links.forEach(function(a){
+    a.addEventListener('click', function(){
+      setActive(a.getAttribute('href'));
+      toggle.checked = false;
+    });
+  });
+
+  window.addEventListener('hashchange', function(){
+    setActive(location.hash);
+  });
+})();
+</script>
+
+</body>
+</html>
